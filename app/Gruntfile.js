@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             },
 
             css: {
-                src: ['css/*.css'],
+                src: ['reset.css', 'normalize.css', 'css/*.css'],
                 dest: '../web/css/styles.min.css'
             }
         },
@@ -66,9 +66,16 @@ module.exports = function(grunt) {
                 }
             },
 
-            html: {
+            template: {
                 files: ['template/*.html'],
                 tasks: ['ngtemplates'],
+                options: {
+                    interrupt: true
+                }
+            },
+
+            html: {
+                files: ['../web/*.html'],
                 options: {
                     interrupt: true
                 }

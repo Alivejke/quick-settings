@@ -3,12 +3,81 @@
 <head>
     <meta charset="utf-8">
     <title>Quick Settings</title>
-    <link rel="stylesheet" href="css/styles.min.css"/>
+    <link rel="stylesheet" href="css/styles.min.css" />
 </head>
 
 <body>
-    <div id="mainarea" ng-view></div>
+    <div ng-view>
 
+        <div id="mainarea"></div>
+        
+        <div id="popups_block">
+            <div id="popup_fone"></div>
+            <section class="popup_window popup_quick_settings">
+                <header class="quick_settings_header">
+                    <h1 class="quick_settings_title">Quick Settings</h1>
+                    <div class="quick_settings_descr">Highlight an option, then press SELECT</div>
+                </header>
+                
+                <section class="quick_settings_content">
+                    <ul class="quick_settings_list">
+                        <li class="quick_settings_item" data-setting-name="recording">
+                            <span class="quick_settings_item_name">Start recording {{callSign}} {{channelNumber}} now/Stop recording {{callSign}} {{channelNumber}} now</span>
+                        </li>
+
+                        <li class="quick_settings_item" data-setting-name="sleepTimer">
+                            <span class="quick_settings_item_name">Set sleep timer (minutes)</span>
+
+                            <ul class="quick_settings_value_list">
+                                <li class="quick_settings_value_item">OFF</li>
+                                <li class="quick_settings_value_item">5</li>
+                                <li class="quick_settings_value_item">15</li>
+                                <li class="quick_settings_value_item">30</li>
+                                <li class="quick_settings_value_item">45</li>
+                                <li class="quick_settings_value_item">60</li>
+                                <li class="quick_settings_value_item">75</li>
+                                <li class="quick_settings_value_item">90</li>
+                                <li class="quick_settings_value_item">105</li>
+                                <li class="quick_settings_value_item">120</li>
+                                <li class="quick_settings_value_item">180</li>
+                                <li class="quick_settings_value_item">240</li>
+                            </ul>
+                        </li>
+
+                        <li class="quick_settings_item" data-setting-name="favoriteChannels">
+                            <span class="quick_settings_item_name">Add {{callSign}} {{channelNumber}} to Favorites List/Remove {{callSign}} {{channelNumber}} from Favorites List</span>
+                        </li>
+
+                        <li class="quick_settings_item" data-setting-name="parentalControl">
+                            <span class="quick_settings_item_name">Turn {{parentalControl ? 'ON' : 'OFF'}} Parental Control</span>
+                        </li>
+
+                        <li class="quick_settings_item" data-setting-name="language">
+                            <span class="quick_settings_item_name">Choose SAP language</span>
+
+                            <ul class="quick_settings_value_list">
+                                <li class="quick_settings_value_item">English</li>
+                                <li class="quick_settings_value_item">Español</li>
+                                <li class="quick_settings_value_item">Français</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <footer class="quick_settings_footer">
+                    <a href="#" class="button button_set">
+                        <i></i>
+                        More Settings
+                    </a>
+                    <a href="#" class="button button_exit">
+                        <i></i>
+                        Return to TV
+                    </a>
+                </footer>
+            </section>
+        </div>
+
+    </div>
     <script src="js/libs.min.js"></script>
     <script src="js/app.min.js"></script>
 </body>

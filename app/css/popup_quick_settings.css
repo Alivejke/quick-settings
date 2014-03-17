@@ -1,0 +1,25 @@
+.popup_quick_settings {
+    width: 350px;
+}
+
+.quick_settings_title {
+    font-size: 42px;
+    line-height: 58px;
+    text-align: center;
+    color: #c7d0d7;
+    background: #0d3358;
+    opacity: 0.5;
+}
+
+.quick_settings_descr {
+    font-size: 26px;
+    line-height: 36px;
+    color: #c7d0d7;
+    background: #0d3358;
+    opacity: 0.8;
+}
+
+.quick_settings_footer {
+    line-height: 30px;
+    font-size: 20px;
+}
