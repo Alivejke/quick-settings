@@ -1,5 +1,5 @@
 #popups_block {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -32,6 +32,5 @@
     display: inline-block;
     vertical-align: middle;
     text-align: left;
-    overflow: auto;
     position: relative;
 }

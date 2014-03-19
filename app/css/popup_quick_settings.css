@@ -1,5 +1,5 @@
 .popup_quick_settings {
-    width: 350px;
+    width: 420px;
 }
 
 .quick_settings_title {
@@ -9,17 +9,151 @@
     color: #c7d0d7;
     background: #0d3358;
     opacity: 0.5;
+    letter-spacing: -2px;
+    margin: 0;
 }
 
 .quick_settings_descr {
-    font-size: 26px;
+    font-size: 20px;
+    font-weight: bold;
     line-height: 36px;
     color: #c7d0d7;
     background: #0d3358;
     opacity: 0.8;
+    letter-spacing: -1px;
+    text-align: center;
+}
+
+.quick_settings_content {
+    margin: 10px 0;
+    position: relative;
+}
+
+.quick_settings_item {
+    background: #30567a;
+    margin-top: 5px;
+    padding: 0 25px;
+    position: relative;
+}
+
+.quick_settings_item:first-child {
+    margin-top: 0;
+}
+
+.quick_settings_item_name {
+    line-height: 38px;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.quick_settings_item:first-child .quick_settings_item_name,
+.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item .quick_settings_item_name {
+    color: #889fb0;
+}
+
+.quick_settings_item + .quick_settings_item .quick_settings_item_name,
+.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item .quick_settings_item_name {
+    color: #a9b7c1;
+}
+
+.quick_settings_item.active {
+    background: #d7d44f;
+    margin: 10px 0;
+    outline: 5px solid #499183;
+}
+
+.quick_settings_item.active.inner_slider {
+    background: #4a9085;
+}
+
+.quick_settings_item.active .quick_settings_item_name {
+    color: #303131;
+}
+
+.quick_settings_item_prev,
+.quick_settings_item_next {
+    position: absolute;
+    top: 65px;
+    left: -5px;
+    background: url(../img/arrows_sprite.png) no-repeat;
+    width: 27px;
+    height: 19px;
+}
+
+.quick_settings_item_next {
+    top: 135px;
+    background-position: 0 -40px;
+}
+
+.quick_settings_value_block {
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: 0;
+    height: 32px;
+    overflow: hidden;
+}
+
+.quick_settings_item.active .quick_settings_value_block {
+    display: block;
+    padding: 0 23px;
+}
+
+.quick_settings_value_list {
+    background: #d7d44f;
+}
+
+.quick_settings_value_item {
+    padding: 0 23px;
+    line-height: 32px;
+    white-space: nowrap;
+    font-size: 21px;
+    color: #303131;
+    font-weight: bold;
+    display: none;
+}
+
+.quick_settings_value_item.active {
+    display: block;
+}
+
+.quick_settings_value_item_prev,
+.quick_settings_value_item_next {
+    position: absolute;
+    top: 3px;
+    background: url(../img/arrows_sprite.png) no-repeat;
+    width: 19px;
+    height: 27px;
+}
+
+.quick_settings_value_item_prev {
+    left: 0;
+    background-position: 0 -127px;
+}
+
+.quick_settings_value_item_next {
+    right: 0;
+    background-position: 0 -80px;
 }
 
 .quick_settings_footer {
     line-height: 30px;
     font-size: 20px;
+    background: #0d3358;
+    opacity: 0.6;
+    line-height: 36px;
+    overflow: hidden;
+}
+
+.quick_settings_footer a {
+    margin: 0 15px;
+}
+
+.quick_settings_footer .button_set {
+    float: left;
+}
+
+.quick_settings_footer .button_exit {
+    float: right;
 }

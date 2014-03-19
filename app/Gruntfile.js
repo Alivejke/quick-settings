@@ -22,7 +22,7 @@ module.exports = function(grunt) {
             },
 
             css: {
-                src: ['reset.css', 'normalize.css', 'css/*.css'],
+                src: ['css/reset.css', 'css/normalize.css', 'css/*.css'],
                 dest: '../web/css/styles.min.css'
             }
         },
