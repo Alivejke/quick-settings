@@ -587,18 +587,39 @@ body {
 .quick_settings_content {
     margin: 10px 0;
     position: relative;
+    height: 220px;
+    overflow: hidden;
+    padding: 0 5px;
+    left: -5px;
+    width: 100%;
 }
 
 .quick_settings_item {
     background: #30567a;
-    margin-top: 5px;
+    margin-bottom: 5px;
     padding: 0 25px;
     position: relative;
+    -webkit-transition: margin 500ms ease;
+    -moz-transition: margin 500ms ease;
+    -ms-transition: margin 500ms ease;
+    -o-transition: margin 500ms ease;
+    transition: margin 500ms ease;
 }
 
-.quick_settings_item:first-child {
+.quick_settings_item.ng-enter {
+    margin-top: -43px;
+}
+
+.quick_settings_item.ng-enter-active {
     margin-top: 0;
 }
+
+/*.quick_settings_item.ng-leave {
+}
+
+.quick_settings_item.ng-leave-active {
+    margin-top: -43px;
+}*/
 
 .quick_settings_item_name {
     line-height: 38px;
@@ -607,13 +628,13 @@ body {
     letter-spacing: -1px;
 }
 
-.quick_settings_item:first-child .quick_settings_item_name,
-.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item .quick_settings_item_name {
+.quick_settings_item:first-child,
+.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item {
     color: #889fb0;
 }
 
-.quick_settings_item + .quick_settings_item .quick_settings_item_name,
-.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item .quick_settings_item_name {
+.quick_settings_item + .quick_settings_item,
+.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item {
     color: #a9b7c1;
 }
 
@@ -627,7 +648,7 @@ body {
     background: #4a9085;
 }
 
-.quick_settings_item.active .quick_settings_item_name {
+.quick_settings_item.active {
     color: #303131;
 }
 
@@ -635,14 +656,14 @@ body {
 .quick_settings_item_next {
     position: absolute;
     top: 65px;
-    left: -5px;
+    left: 0;
     background: url(../img/arrows_sprite.png) no-repeat;
     width: 27px;
     height: 19px;
 }
 
 .quick_settings_item_next {
-    top: 135px;
+    top: 136px;
     background-position: 0 -40px;
 }
 

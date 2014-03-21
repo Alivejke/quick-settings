@@ -21,59 +21,38 @@
                 
                 <section class="quick_settings_content">
                     <ul class="quick_settings_list">
-                        <li class="quick_settings_item">
-                            <span class="quick_settings_item_name">
-                                {{activeSettings.recording ? 'Stop' : 'Start'}} 
-                                recording {{callSign}} {{channelNumber}} now
+                        <li 
+                            class="quick_settings_item{{$index === 2 ? ' active' : ''}}{{setting.type === 'slider' ? ' inner_slider' : ''}}" 
+                            ng-repeat="setting in avaliableSettings" 
+                            ng-switch="setting.type"
+                        >                            
+                            <span class="quick_settings_item_name" ng-switch-default="">
+                                {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}
                             </span>
-                        </li>
 
-                        <li class="quick_settings_item">
-                            <span class="quick_settings_item_name">
-                                {{activeSettings.favoriteChannel ? 'Remove' : 'Add'}}
-                                {{callSign}} {{channelNumber}}
-                                {{activeSettings.favoriteChannel ? 'from' : 'to'}}
-                                Favorites List
+                            <span class="quick_settings_item_name" ng-switch-when="slider">
+                                {{setting.text}}
                             </span>
-                        </li>
 
-                        <li class="quick_settings_item active inner_slider">
-                            <span class="quick_settings_item_name">Choose SAP language</span>
-                            
-                            <div class="quick_settings_value_block">
+                            <span class="quick_settings_item_value" ng-show="setting.showCurrent && activeSettings[setting.name].active != 'OFF'">
+                                {{activeSettings[setting.name].active}}
+                            </span>
+
+                            <div class="quick_settings_value_block" ng-switch-when="slider">
                                 <ul class="quick_settings_value_list">
-                                    <li class="quick_settings_value_item {{lang === activeSettings.language ? 'active' : ''}}" ng-repeat="lang in avaliableSettings.language">
+                                    <li class="quick_settings_value_item {{activeSettings[setting.name].active === setting.item ? 'active' : ''}}" ng-repeat="item in setting.items">
                                         {{lang}}
                                     </li>
                                 </ul>
 
                                 <a href="#" class="quick_settings_value_item_prev"></a>
                                 <a href="#" class="quick_settings_value_item_next"></a>
-                            </div>
-                        </li>
-
-                        <li class="quick_settings_item">
-                            <span class="quick_settings_item_name">Set sleep timer (minutes)</span>
-                            
-                            <div class="quick_settings_value_block">
-                                <ul class="quick_settings_value_list">
-                                    <li class="quick_settings_value_item" ng-repeat="sleepTimerVal in avaliableSettings.sleepTimer">
-                                        {{sleepTimerVal}}
-                                    </li>
-                                </ul>
-
-                                <a href="#" class="quick_settings_value_item_prev"></a>
-                                <a href="#" class="quick_settings_value_item_next"></a>
-                            </div>
-                        </li>
-
-                        <li class="quick_settings_item">
-                            <span class="quick_settings_item_name">Turn {{activeSettings.parentalControl ? 'ON' : 'OFF'}} Parental Control</span>
+                            </div>                           
                         </li>
                     </ul>
 
-                    <a href="#" class="quick_settings_item_prev"></a>
-                    <a href="#" class="quick_settings_item_next"></a>
+                    <a href="#" class="quick_settings_item_prev" ng-click="settingsSlideUp()"></a>
+                    <a href="#" class="quick_settings_item_next" ng-click="settingsSlideDown()"></a>
                 </section>
 
                 <footer class="quick_settings_footer">
