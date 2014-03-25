@@ -34,11 +34,16 @@
     width: 100%;
 }
 
+.quick_settings_list {
+    /*margin-top: -5px;*/
+}
+
 .quick_settings_item {
     background: #30567a;
-    margin-bottom: 5px;
+    margin: 0 0 5px;
     padding: 0 25px;
     position: relative;
+    color: #889fb0;
     -webkit-transition: margin 500ms ease;
     -moz-transition: margin 500ms ease;
     -ms-transition: margin 500ms ease;
@@ -46,20 +51,21 @@
     transition: margin 500ms ease;
 }
 
-.quick_settings_item.ng-enter {
+.quick_settings_item.ng-enter:first-child {
     margin-top: -43px;
 }
 
-.quick_settings_item.ng-enter-active {
+.quick_settings_item.ng-enter-active:first-child {
     margin-top: 0;
 }
 
-/*.quick_settings_item.ng-leave {
+.quick_settings_item.ng-leave:first-child {
+    margin-top: 0;
 }
 
-.quick_settings_item.ng-leave-active {
+.quick_settings_item.ng-leave-active:first-child {
     margin-top: -43px;
-}*/
+}
 
 .quick_settings_item_name {
     line-height: 38px;
@@ -68,28 +74,20 @@
     letter-spacing: -1px;
 }
 
-.quick_settings_item:first-child,
-.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item {
-    color: #889fb0;
-}
-
-.quick_settings_item + .quick_settings_item,
-.quick_settings_item + .quick_settings_item + .quick_settings_item + .quick_settings_item {
+.quick_settings_item.idx_1,
+.quick_settings_item.idx_3 {
     color: #a9b7c1;
 }
 
-.quick_settings_item.active {
+.quick_settings_item.idx_2 {
     background: #d7d44f;
     margin: 10px 0;
     outline: 5px solid #499183;
-}
-
-.quick_settings_item.active.inner_slider {
-    background: #4a9085;
-}
-
-.quick_settings_item.active {
     color: #303131;
+}
+
+.quick_settings_item.idx_2.inner_slider {
+    background: #4a9085;
 }
 
 .quick_settings_item_prev,

@@ -8,7 +8,7 @@
 
 <body>
     <div ng-view>
-
+<input type="text">
         <div id="mainarea"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR6BikSHfb13qV7VlXVppNU8cM5DgtUgWntYDDanKoFnn6PsqI" alt="" width="100%"></div>
         
         <div id="popups_block">
@@ -22,10 +22,10 @@
                 <section class="quick_settings_content">
                     <ul class="quick_settings_list">
                         <li 
-                            class="quick_settings_item{{$index === 2 ? ' active' : ''}}{{setting.type === 'slider' ? ' inner_slider' : ''}}" 
-                            ng-repeat="setting in avaliableSettings" 
+                            class="quick_settings_item {{'idx_'+ $index}} {{setting.type === 'slider' ? ' inner_slider' : ''}}" 
+                            ng-repeat="setting in avaliableSettings | limitTo:5" 
                             ng-switch="setting.type"
-                        >                            
+                        >
                             <span class="quick_settings_item_name" ng-switch-default="">
                                 {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}
                             </span>
@@ -47,7 +47,7 @@
 
                                 <a href="#" class="quick_settings_value_item_prev"></a>
                                 <a href="#" class="quick_settings_value_item_next"></a>
-                            </div>                           
+                            </div>
                         </li>
                     </ul>
 
