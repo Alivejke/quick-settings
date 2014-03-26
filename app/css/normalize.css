@@ -261,6 +261,12 @@ textarea {
 
 button {
   overflow: visible;
+  border: none;
+  background: none;
+}
+
+button:focus {
+  outline:0;
 }
 
 /**

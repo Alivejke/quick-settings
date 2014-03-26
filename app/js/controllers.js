@@ -1,30 +1,45 @@
 'use strict';
 
-angular.module('app.controllers', ['app.services', 'ngAnimate'])
+angular.module('app.controllers', ['app.services'])
     .controller('QuickSettingsCtrl', ['$scope', 'quickSettings', '$timeout', function($scope, quickSettings, $timeout) {
         $scope.avaliableSettings = quickSettings.avaliableSettings;
         $scope.activeSettings = quickSettings.activeSettings;
-        $scope.animationBlock = false;
 
         $scope.currentTime = (new Date).getTime();
 
+        $scope.ctrls = {
+            SET: 13,
+            EXIT: 27,
+            UP: 38,
+            DOWN: 40,
+            LEFT: 37,
+            RIGHT: 39
+        };
+
+        $scope.animationBlock = false;
         function unblockAnimation (delay) {
             $timeout(function() {
                 $scope.animationBlock = false;
             }, delay);
         }
 
+
+        $scope.isOpen = false;
+        $scope.toggleOpen = function() {
+            $scope.isOpen = !$scope.isOpen;
+        };
+
+
         $scope.settingsSlideUp = function() {
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
 
-            var popped = angular.copy($scope.avaliableSettings[$scope.avaliableSettings.length - 1]);            
-            $scope.avaliableSettings.unshift(popped);
-
+            var last = angular.copy($scope.avaliableSettings[$scope.avaliableSettings.length - 1]);            
+            $scope.avaliableSettings.unshift(last);
 
             $timeout(function () {
                 $scope.avaliableSettings.pop();
-                unblockAnimation(500);
+                unblockAnimation(300);
             }, 0);
         };
 
@@ -32,12 +47,12 @@ angular.module('app.controllers', ['app.services', 'ngAnimate'])
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
 
-            var shifted = angular.copy( $scope.avaliableSettings[0] );            
+            var first = angular.copy( $scope.avaliableSettings[0] );            
             $scope.avaliableSettings.shift();
 
             $timeout(function () {
-                $scope.avaliableSettings.push(shifted);
-                unblockAnimation(500);
+                $scope.avaliableSettings.push(first);
+                unblockAnimation(300);
             }, 0);
         };
 

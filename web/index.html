@@ -8,66 +8,9 @@
 
 <body>
     <div ng-view>
-<input type="text">
         <div id="mainarea"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR6BikSHfb13qV7VlXVppNU8cM5DgtUgWntYDDanKoFnn6PsqI" alt="" width="100%"></div>
-        
-        <div id="popups_block">
-            <div id="popup_fone"></div>
-            <section class="popup_window popup_quick_settings" ng-controller="QuickSettingsCtrl">
-                <header class="quick_settings_header">
-                    <h1 class="quick_settings_title">Quick Settings</h1>
-                    <div class="quick_settings_descr">Highlight an option, then press SELECT</div>
-                </header>
-                
-                <section class="quick_settings_content">
-                    <ul class="quick_settings_list">
-                        <li 
-                            class="quick_settings_item {{'idx_'+ $index}} {{setting.type === 'slider' ? ' inner_slider' : ''}}" 
-                            ng-repeat="setting in avaliableSettings | limitTo:5" 
-                            ng-switch="setting.type"
-                        >
-                            <span class="quick_settings_item_name" ng-switch-default="">
-                                {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}
-                            </span>
 
-                            <span class="quick_settings_item_name" ng-switch-when="slider">
-                                {{setting.text}}
-                            </span>
-
-                            <span class="quick_settings_item_value" ng-show="setting.showCurrent && activeSettings[setting.name].active != 'OFF'">
-                                {{activeSettings[setting.name].active}}
-                            </span>
-
-                            <div class="quick_settings_value_block" ng-switch-when="slider">
-                                <ul class="quick_settings_value_list">
-                                    <li class="quick_settings_value_item {{activeSettings[setting.name].active === setting.item ? 'active' : ''}}" ng-repeat="item in setting.items">
-                                        {{lang}}
-                                    </li>
-                                </ul>
-
-                                <a href="#" class="quick_settings_value_item_prev"></a>
-                                <a href="#" class="quick_settings_value_item_next"></a>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="quick_settings_item_prev" ng-click="settingsSlideUp()"></a>
-                    <a href="#" class="quick_settings_item_next" ng-click="settingsSlideDown()"></a>
-                </section>
-
-                <footer class="quick_settings_footer">
-                    <a href="#" class="button button_set">
-                        <i>SET</i>
-                        More Settings
-                    </a>
-                    <a href="#" class="button button_exit">
-                        <i>EXIT</i>
-                        Return to TV
-                    </a>
-                </footer>
-            </section>
-        </div>
-
+        <popup-quick-settings></popup-quick-settings>
     </div>
     <script src="js/libs.min.js"></script>
     <script src="js/app.min.js"></script>

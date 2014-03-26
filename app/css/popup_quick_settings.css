@@ -44,11 +44,11 @@
     padding: 0 25px;
     position: relative;
     color: #889fb0;
-    -webkit-transition: margin 500ms ease;
-    -moz-transition: margin 500ms ease;
-    -ms-transition: margin 500ms ease;
-    -o-transition: margin 500ms ease;
-    transition: margin 500ms ease;
+    -webkit-transition: all 300ms ease;
+    -moz-transition: all 300ms ease;
+    -ms-transition: all 300ms ease;
+    -o-transition: all 300ms ease;
+    transition: all 300ms ease;
 }
 
 .quick_settings_item.ng-enter:first-child {
@@ -114,7 +114,7 @@
     overflow: hidden;
 }
 
-.quick_settings_item.active .quick_settings_value_block {
+.quick_settings_item.idx_2 .quick_settings_value_block {
     display: block;
     padding: 0 23px;
 }
