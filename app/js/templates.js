@@ -26,11 +26,11 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <li \r" +
     "\n" +
-    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{setting.type === 'slider' ? ' inner_slider' : ''}}\" \r" +
+    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{setting.selected ? 'selected' : ''}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}\"\r" +
     "\n" +
     "                    ng-repeat=\"setting in avaliableSettings | limitTo:5\" \r" +
     "\n" +
-    "                    ng-switch=\"setting.type\"\r" +
+    "                    ng-switch=\"setting.widget\"\r" +
     "\n" +
     "                >\r" +
     "\n" +
@@ -50,7 +50,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\r" +
     "\n" +
-    "                    <span class=\"quick_settings_item_value\" ng-show=\"setting.showCurrent && activeSettings[setting.name].active != 'OFF'\">\r" +
+    "                    <span class=\"quick_settings_item_value\" ng-if=\"setting.showCurrent && activeSettings[setting.name].active != 'OFF'\">\r" +
     "\n" +
     "                        {{activeSettings[setting.name].active}}\r" +
     "\n" +
@@ -72,9 +72,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\r" +
     "\n" +
-    "                        <button class=\"quick_settings_value_item_prev\"></button>\r" +
+    "                        <button class=\"quick_settings_value_item_prev\" ng-click=\"switchSettingValue('prev')\"></button>\r" +
     "\n" +
-    "                        <button class=\"quick_settings_value_item_next\"></button>\r" +
+    "                        <button class=\"quick_settings_value_item_next\" ng-click=\"switchSettingValue('next')\"></button>\r" +
     "\n" +
     "                    </div>\r" +
     "\n" +
@@ -84,9 +84,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\r" +
     "\n" +
-    "            <button class=\"quick_settings_item_prev\" ng-click=\"settingsSlideUp()\"></button>\r" +
+    "            <button class=\"quick_settings_item_prev\" ng-click=\"settingsPrev()\"></button>\r" +
     "\n" +
-    "            <button class=\"quick_settings_item_next\" ng-click=\"settingsSlideDown()\"></button>\r" +
+    "            <button class=\"quick_settings_item_next\" ng-click=\"settingsNext()\"></button>\r" +
     "\n" +
     "        </section>\r" +
     "\n" +

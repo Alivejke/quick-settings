@@ -67,11 +67,17 @@
     margin-top: -43px;
 }
 
-.quick_settings_item_name {
+.quick_settings_item_name,
+.quick_settings_item_value {
     line-height: 38px;
     font-size: 21px;
     font-weight: bold;
     letter-spacing: -1px;
+}
+
+.quick_settings_item_value {
+    float: right;
+    margin-right: 22px;
 }
 
 .quick_settings_item.idx_1,
@@ -157,7 +163,6 @@
 }
 
 .quick_settings_footer {
-    line-height: 30px;
     font-size: 20px;
     background: #0d3358;
     opacity: 0.6;
@@ -165,14 +170,12 @@
     overflow: hidden;
 }
 
-.quick_settings_footer a {
-    margin: 0 15px;
-}
-
 .quick_settings_footer .button_set {
     float: left;
+    margin-left: 15px;
 }
 
 .quick_settings_footer .button_exit {
     float: right;
+    margin-right: 15px;
 }

@@ -11,24 +11,43 @@ angular.module('app.directives', ['app.controllers'])
             link: function(scope, element, attrs) {
                 $document.bind('keydown', function (event) {
                     if(event.which === scope.ctrls.SET) {
-                        if(!scope.isOpen) {
-                            scope.$apply(scope.toggleOpen);
-                        }
-                    } else if(event.which === scope.ctrls.EXIT) {
+
                         if(scope.isOpen) {
-                            scope.$apply(scope.toggleOpen);
+                            scope.$apply(scope.selectSetting);
                         }
+
+                        scope.$apply(scope.toggleOpen);
+
+                    } else if(event.which === scope.ctrls.EXIT) {
+
+                        if(scope.isOpen) {
+                            scope.$apply(function() {
+                                scope.toggleOpen();
+                                scope.discardSettings();
+                            });
+                        }
+
                     } else if(event.which === scope.ctrls.UP) {
+
                         event.preventDefault();
-                        scope.settingsSlideUp();
+                        scope.settingsPrev();
+                        scope.$apply(scope.discardSettings);
+
                     } else if(event.which === scope.ctrls.DOWN) {
+
                         event.preventDefault();
-                        scope.settingsSlideDown();
+                        scope.settingsNext();
+                        scope.$apply(scope.discardSettings);
+
                     } else if(event.which === scope.ctrls.LEFT) {
+
                         event.preventDefault();
+                        scope.$apply(scope.switchSettingValue('prev'));
                         
                     } else if(event.which === scope.ctrls.RIGHT) {
+
                         event.preventDefault();
+                        scope.$apply(scope.switchSettingValue('next'));
                         
                     }
                 });

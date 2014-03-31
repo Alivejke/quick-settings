@@ -2,11 +2,21 @@
 
 angular.module('app.services', ['LocalStorageModule'])
     .factory('quickSettings', ['localStorageService', function(lsService) {
-        var factory = {},
-            callSign = 'WSCBS',
+        function getIdxByName(name, array) {
+            var idx = -1;
+
+            for (var i = array.length - 1; i >= 0; i--) {
+                if(array[i].name === name) {
+                    idx = i;
+                }
+            };
+
+            return idx;
+        }
+
+        var callSign = 'WSCBS',
             channelNumber = 2,
-            activeSettings = lsService.get('quickSettings'),
-            avaliableSettings = [
+            avaliableSettings: [
                 {
                     name: 'recording',
                     textEnabled: 'Stop recording ' + callSign + ' ' + channelNumber + ' now',
@@ -21,13 +31,13 @@ angular.module('app.services', ['LocalStorageModule'])
                     name: 'language',
                     text: 'Choose SAP language',
                     items: ['English', 'Español', 'Français'],
-                    type: 'slider'
+                    widget: 'slider'
                 },
                 {
                     name: 'sleepTimer',
                     text: 'Set Sleep Timer  (minutes)',
                     items: ['OFF', 5, 15, 30, 45, 60, 75, 90, 105, 120, 180, 240],
-                    type: 'slider',
+                    widget: 'slider',
                     showCurrent: true
                 },
                 {
@@ -35,19 +45,50 @@ angular.module('app.services', ['LocalStorageModule'])
                     textEnabled: 'Turn OFF Parental Control',
                     textDisabled: 'Turn ON Parental Control'
                 }
-            ];
+            ],
+            activeSettings,
+            factory = {
+                setActiveSettings: function(activeSettings) {
+                    lsService.set('quickSettings', activeSettings);
+                },
+                getSettings: function() {
+                    var settings = helpers.extend(avaliableSettings, activeSettings);
+                    return settings;
+                },
+                getAvaliableSettings: function () {
+                    return avaliableSettings;
+                },
+                getActiveSettings: function () {
+                    activeSettings = lsService.set('quickSettings');
+                    return activeSettings;
+                }/*,
+                updateSettings: function (activeSettings) {
+                    var updated = factory.avaliableSettings.slice();
 
-        factory.setSettings = function(settings) {
-            lsService.set('quickSettings', settings);
-        }
+                    if(activeSettings.sleepTimer.timestamp) {
+                        var timepast = ( new Date() - new Date(activeSettings.sleepTimer.timestamp) ) / 1000 / 60,
+                            timeleft = parseInt(activeSettings.sleepTimer.active - timepast);
+                        
+                        if(timeleft > 0) {
+                            var sleepTimerIdx = getIdxByName('sleepTimer', updated);
+                            updated[sleepTimerIdx].items.push(timeleft);
+                            updated[sleepTimerIdx].items.sort(function(a, b) {return a - b;});
+                            activeSettings.sleepTimer.active = timeleft;
+                            activeSettings.sleepTimer.timestamp = new Date();
+                        } else {
+                            activeSettings.sleepTimer.active = 'OFF';
+                        }
 
-        // Returns last saved settings
-        factory.getLastSettings = function() {
-            return lsService.get('quickSettings');
-        }
+                        this.setSettings(activeSettings);
+                    }
 
-        if(!activeSettings) {
-            activeSettings = {
+                    return updated;
+                }*/
+            },
+            activeSettings = factory.getSettings();
+
+        if( !activeSettings ) {
+            factory.setSettings({
                 recording: {
                     active: false
                 },
@@ -64,14 +105,8 @@ angular.module('app.services', ['LocalStorageModule'])
                 parentalControl: {
                     active: false
                 }
-            };
-
-            factory.setSettings(activeSettings);
+            });
         }
-
-        factory.activeSettings = activeSettings;
-
-        factory.avaliableSettings = avaliableSettings;
 
         return factory;
     }]);

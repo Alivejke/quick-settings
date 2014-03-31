@@ -2,8 +2,11 @@
 
 angular.module('app.controllers', ['app.services'])
     .controller('QuickSettingsCtrl', ['$scope', 'quickSettings', '$timeout', function($scope, quickSettings, $timeout) {
-        $scope.avaliableSettings = quickSettings.avaliableSettings;
-        $scope.activeSettings = quickSettings.activeSettings;
+        // $scope.avaliableSettings = quickSettings.getAvaliableSettings();
+        // $scope.activeSettings = quickSettings.getActiveSettings();
+        $scope.settings = quickSettings.getSettings();
+
+        $scope.avaliableSettings[2].selected = true;
 
         $scope.currentTime = (new Date).getTime();
 
@@ -27,12 +30,41 @@ angular.module('app.controllers', ['app.services'])
         $scope.isOpen = false;
         $scope.toggleOpen = function() {
             $scope.isOpen = !$scope.isOpen;
+
+            $scope.avaliableSettings = quickSettings.updateSettings($scope.activeSettings);
         };
 
+        $scope.selectSetting = function() {
+            // Second is always the active one
+            var activeSetting = $scope.avaliableSettings[2];
 
-        $scope.settingsSlideUp = function() {
+            if(activeSetting.widget === 'slider') {
+                $scope.applySettings();
+            } else {
+                $scope.toggleSetting(activeSetting.name);
+                $scope.applySettings();
+            }
+        }
+
+        $scope.discardSettings = function() {
+            $scope.activeSettings = quickSettings.getSettings();
+        }
+
+        $scope.applySettings = function() {
+            quickSettings.setSettings($scope.activeSettings);
+        }
+
+        $scope.toggleSetting = function (activeSettingName) {
+            $scope.activeSettings[activeSettingName].active = !$scope.activeSettings[activeSettingName].active;
+        }
+
+
+        $scope.settingsPrev = function() {
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
+
+            $scope.avaliableSettings[2].selected = false;
+            $scope.avaliableSettings[1].selected = true;
 
             var last = angular.copy($scope.avaliableSettings[$scope.avaliableSettings.length - 1]);            
             $scope.avaliableSettings.unshift(last);
@@ -43,9 +75,12 @@ angular.module('app.controllers', ['app.services'])
             }, 0);
         };
 
-        $scope.settingsSlideDown = function() {
+        $scope.settingsNext = function() {
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
+
+            $scope.avaliableSettings[2].selected = false;
+            $scope.avaliableSettings[3].selected = true;
 
             var first = angular.copy( $scope.avaliableSettings[0] );            
             $scope.avaliableSettings.shift();
@@ -54,6 +89,29 @@ angular.module('app.controllers', ['app.services'])
                 $scope.avaliableSettings.push(first);
                 unblockAnimation(300);
             }, 0);
+        };
+
+        $scope.switchSettingValue = function(direction) {
+            var activeSetting = $scope.avaliableSettings[2],
+                currIdx = activeSetting.items.indexOf($scope.activeSettings[activeSetting.name].active);
+
+            if(direction === 'next') {
+                currIdx++;
+                if(currIdx >= activeSetting.items.length) {
+                    currIdx = 0;
+                }
+            } else if(direction === 'prev') {
+                currIdx--;
+                if(currIdx < 0) {
+                    currIdx = activeSetting.items.length - 1;
+                }
+            }
+
+            $scope.activeSettings[activeSetting.name].active = activeSetting.items[currIdx];
+
+            if(activeSetting.name === 'sleepTimer') {
+                $scope.activeSettings[activeSetting.name].timestamp = (new Date ()).getTime();
+            }
         };
 
     }]);

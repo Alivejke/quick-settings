@@ -10,9 +10,9 @@
         <section class="quick_settings_content">
             <ul class="quick_settings_list">
                 <li 
-                    class="quick_settings_item {{'idx_'+ $index}} {{setting.type === 'slider' ? ' inner_slider' : ''}}" 
+                    class="quick_settings_item {{'idx_'+ $index}} {{setting.selected ? 'selected' : ''}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}"
                     ng-repeat="setting in avaliableSettings | limitTo:5" 
-                    ng-switch="setting.type"
+                    ng-switch="setting.widget"
                 >
                     <span class="quick_settings_item_name" ng-switch-default="">
                         {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}
@@ -22,7 +22,7 @@
                         {{setting.text}}
                     </span>
 
-                    <span class="quick_settings_item_value" ng-show="setting.showCurrent && activeSettings[setting.name].active != 'OFF'">
+                    <span class="quick_settings_item_value" ng-if="setting.showCurrent && activeSettings[setting.name].active != 'OFF'">
                         {{activeSettings[setting.name].active}}
                     </span>
 
@@ -33,14 +33,14 @@
                             </li>
                         </ul>
 
-                        <button class="quick_settings_value_item_prev"></button>
-                        <button class="quick_settings_value_item_next"></button>
+                        <button class="quick_settings_value_item_prev" ng-click="switchSettingValue('prev')"></button>
+                        <button class="quick_settings_value_item_next" ng-click="switchSettingValue('next')"></button>
                     </div>
                 </li>
             </ul>
 
-            <button class="quick_settings_item_prev" ng-click="settingsSlideUp()"></button>
-            <button class="quick_settings_item_next" ng-click="settingsSlideDown()"></button>
+            <button class="quick_settings_item_prev" ng-click="settingsPrev()"></button>
+            <button class="quick_settings_item_next" ng-click="settingsNext()"></button>
         </section>
 
         <footer class="quick_settings_footer">
