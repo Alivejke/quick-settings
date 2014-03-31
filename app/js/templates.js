@@ -26,7 +26,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <li \r" +
     "\n" +
-    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{setting.selected ? 'selected' : ''}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}\"\r" +
+    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}\" \r" +
     "\n" +
     "                    ng-repeat=\"setting in avaliableSettings | limitTo:5\" \r" +
     "\n" +

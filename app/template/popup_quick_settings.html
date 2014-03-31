@@ -10,7 +10,7 @@
         <section class="quick_settings_content">
             <ul class="quick_settings_list">
                 <li 
-                    class="quick_settings_item {{'idx_'+ $index}} {{setting.selected ? 'selected' : ''}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}"
+                    class="quick_settings_item {{'idx_'+ $index}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}" 
                     ng-repeat="setting in avaliableSettings | limitTo:5" 
                     ng-switch="setting.widget"
                 >
