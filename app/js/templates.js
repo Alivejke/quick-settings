@@ -26,9 +26,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                <li \r" +
     "\n" +
-    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}\" \r" +
+    "                    class=\"quick_settings_item {{'idx_'+ $index}} {{'inner_' + setting.widget}}\"\r" +
     "\n" +
-    "                    ng-repeat=\"setting in avaliableSettings | limitTo:5\" \r" +
+    "                    ng-repeat=\"setting in settings | limitTo:5\" \r" +
     "\n" +
     "                    ng-switch=\"setting.widget\"\r" +
     "\n" +
@@ -36,7 +36,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                    <span class=\"quick_settings_item_name\" ng-switch-default=\"\">\r" +
     "\n" +
-    "                        {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}\r" +
+    "                        {{setting.state.active ? txts[setting.name + '_enabled'] : txts[setting.name + '_disabled']}}\r" +
     "\n" +
     "                    </span>\r" +
     "\n" +
@@ -44,15 +44,15 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                    <span class=\"quick_settings_item_name\" ng-switch-when=\"slider\">\r" +
     "\n" +
-    "                        {{setting.text}}\r" +
+    "                        {{txts[setting.name + '_text']}}\r" +
     "\n" +
     "                    </span>\r" +
     "\n" +
     "\r" +
     "\n" +
-    "                    <span class=\"quick_settings_item_value\" ng-if=\"setting.showCurrent && activeSettings[setting.name].active != 'OFF'\">\r" +
+    "                    <span class=\"quick_settings_item_value\" ng-if=\"setting.showCurrent && setting.state.active != 'OFF'\">\r" +
     "\n" +
-    "                        {{activeSettings[setting.name].active}}\r" +
+    "                        {{setting.state.active}}\r" +
     "\n" +
     "                    </span>\r" +
     "\n" +
@@ -62,7 +62,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "                        <ul class=\"quick_settings_value_list\">\r" +
     "\n" +
-    "                            <li class=\"quick_settings_value_item {{activeSettings[setting.name].active === item ? 'active' : ''}}\" ng-repeat=\"item in setting.items\">\r" +
+    "                            <li class=\"quick_settings_value_item {{setting.state.active === item ? 'active' : ''}}\" ng-repeat=\"item in setting.items\">\r" +
     "\n" +
     "                                {{item}}\r" +
     "\n" +

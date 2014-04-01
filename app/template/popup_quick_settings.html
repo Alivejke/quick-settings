@@ -10,25 +10,25 @@
         <section class="quick_settings_content">
             <ul class="quick_settings_list">
                 <li 
-                    class="quick_settings_item {{'idx_'+ $index}} {{setting.widget === 'slider' ? ' inner_' + setting.widget : ''}}" 
-                    ng-repeat="setting in avaliableSettings | limitTo:5" 
+                    class="quick_settings_item {{'idx_'+ $index}} {{'inner_' + setting.widget}}"
+                    ng-repeat="setting in settings | limitTo:5" 
                     ng-switch="setting.widget"
                 >
                     <span class="quick_settings_item_name" ng-switch-default="">
-                        {{activeSettings[setting.name].active ? setting.textEnabled : setting.textDisabled}}
+                        {{setting.state.active ? txts[setting.name + '_enabled'] : txts[setting.name + '_disabled']}}
                     </span>
 
                     <span class="quick_settings_item_name" ng-switch-when="slider">
-                        {{setting.text}}
+                        {{txts[setting.name + '_text']}}
                     </span>
 
-                    <span class="quick_settings_item_value" ng-if="setting.showCurrent && activeSettings[setting.name].active != 'OFF'">
-                        {{activeSettings[setting.name].active}}
+                    <span class="quick_settings_item_value" ng-if="setting.showCurrent && setting.state.active != 'OFF'">
+                        {{setting.state.active}}
                     </span>
 
                     <div class="quick_settings_value_block" ng-switch-when="slider">
                         <ul class="quick_settings_value_list">
-                            <li class="quick_settings_value_item {{activeSettings[setting.name].active === item ? 'active' : ''}}" ng-repeat="item in setting.items">
+                            <li class="quick_settings_value_item {{setting.state.active === item ? 'active' : ''}}" ng-repeat="item in setting.items">
                                 {{item}}
                             </li>
                         </ul>

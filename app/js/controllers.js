@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('app.controllers', ['app.services'])
-    .controller('QuickSettingsCtrl', ['$scope', 'quickSettings', '$timeout', function($scope, quickSettings, $timeout) {
-        $scope.avaliableSettings = quickSettings.avaliableSettings.slice();
-        $scope.activeSettings = quickSettings.getSettings();
+    .controller('QuickSettingsCtrl', ['$scope', 'quickSettings', 'quickSettingsTexts', '$timeout', function($scope, quickSettings, quickSettingsTexts, $timeout) {        
+        quickSettings.adjustByTime($scope.isOpen);
+        $scope.settings = quickSettings.getSettings();
+
+        $scope.txts = quickSettingsTexts.getTexts();
 
         $scope.currentTime = (new Date).getTime();
 
@@ -28,43 +30,51 @@ angular.module('app.controllers', ['app.services'])
         $scope.toggleOpen = function() {
             $scope.isOpen = !$scope.isOpen;
 
-            $scope.avaliableSettings = quickSettings.updateSettings();
+            quickSettings.adjustByTime($scope.isOpen);
+
+            if(!$scope.isOpen) {
+                $timeout.cancel($scope.closePromise);
+            }
         };
 
         $scope.selectSetting = function() {
             // Second is always the active one
-            var activeSetting = $scope.avaliableSettings[2];
+            var activeSetting = $scope.settings[2];
 
             if(activeSetting.widget === 'slider') {
                 $scope.applySettings();
             } else {
-                $scope.toggleSetting(activeSetting.name);
+                $scope.toggleSetting(activeSetting);
                 $scope.applySettings();
             }
-        }
+        };
 
         $scope.discardSettings = function() {
-            $scope.activeSettings = quickSettings.getSettings();
-        }
+            $timeout(function () {
+                quickSettings.restoreSettings();
+                quickSettings.adjustByTime($scope.isOpen);
+            }, 0);
+            
+        };
 
         $scope.applySettings = function() {
-            quickSettings.setSettings($scope.activeSettings);
-        }
+            quickSettings.setActiveSettings();
+        };
 
-        $scope.toggleSetting = function (activeSettingName) {
-            $scope.activeSettings[activeSettingName].active = !$scope.activeSettings[activeSettingName].active;
-        }
+        $scope.toggleSetting = function (activeSetting) {
+            activeSetting.state.active = !activeSetting.state.active;
+        };
 
 
         $scope.settingsPrev = function() {
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
 
-            var last = angular.copy($scope.avaliableSettings[$scope.avaliableSettings.length - 1]);            
-            $scope.avaliableSettings.unshift(last);
+            var last = angular.copy($scope.settings[$scope.settings.length - 1]);            
+            $scope.settings.unshift(last);
 
             $timeout(function () {
-                $scope.avaliableSettings.pop();
+                $scope.settings.pop();
                 unblockAnimation(300);
             }, 0);
         };
@@ -73,18 +83,23 @@ angular.module('app.controllers', ['app.services'])
             if($scope.animationBlock) return;
             $scope.animationBlock = true;
 
-            var first = angular.copy( $scope.avaliableSettings[0] );            
-            $scope.avaliableSettings.shift();
+            var first = angular.copy( $scope.settings[0] );            
+            $scope.settings.shift();
 
             $timeout(function () {
-                $scope.avaliableSettings.push(first);
+                $scope.settings.push(first);
                 unblockAnimation(300);
             }, 0);
         };
 
         $scope.switchSettingValue = function(direction) {
-            var activeSetting = $scope.avaliableSettings[2],
-                currIdx = activeSetting.items.indexOf($scope.activeSettings[activeSetting.name].active);
+            var activeSetting = $scope.settings[2];
+
+            if(activeSetting.widget != 'slider') {
+                return;
+            }
+
+            var currIdx = activeSetting.items.indexOf(activeSetting.state.active);
 
             if(direction === 'next') {
                 currIdx++;
@@ -98,11 +113,20 @@ angular.module('app.controllers', ['app.services'])
                 }
             }
 
-            $scope.activeSettings[activeSetting.name].active = activeSetting.items[currIdx];
+            activeSetting.state.active = activeSetting.items[currIdx];
 
             if(activeSetting.name === 'sleepTimer') {
-                $scope.activeSettings[activeSetting.name].timestamp = (new Date ()).getTime();
+                activeSetting.state.timestamp = (new Date ()).getTime() + activeSetting.state.active * 60 * 1000;
+                quickSettings.adjustByTime(false);
             }
+        };
+
+        $scope.closeTimer = function (delay) {
+            if($scope.closePromise) {
+                $timeout.cancel($scope.closePromise);
+            }
+
+            $scope.closePromise = $timeout($scope.toggleOpen, delay);
         };
 
     }]);

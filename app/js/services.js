@@ -2,79 +2,107 @@
 
 angular.module('app.services', ['LocalStorageModule'])
     .factory('quickSettings', ['localStorageService', function(lsService) {
-        function getIdxByName(name) {
+        function getIdxByName (name) {
             var idx = -1;
-
-            for (var i = arr.length - 1; i >= 0; i--) {
-                if(arr[i].name === name) {
+            settings 
+            for (var i = settings.length - 1; i >= 0; i--) {
+                if(settings[i].name === name) {
                     idx = i;
+                    break;
                 }
             };
-
             return idx;
         }
 
-        var callSign = 'WSCBS',
-            channelNumber = 2,
-            factory = {
-                setSettings: function(settings) {
-                    lsService.set('quickSettings', settings);
+        function extendSettings (settings, avaliableSettings) {
+            for (var i = settings.length - 1; i >= 0; i--) {
+                settings[i].state = avaliableSettings[settings[i].name];                
+            };
+
+            return settings;
+        }
+
+        function removeTempItem (idx) {
+            if(settings[idx].tempItem) {
+                settings[idx].items.splice(settings[idx].tempItem, 1);
+                settings[idx].tempItem = false;
+            }
+        }
+
+        function addTempItem (idx) {
+            var timestamp = settings[idx].state.timestamp,
+                timeleft = parseInt( (timestamp - new Date()) / 1000 / 60 );
+
+            if(settings[idx].tempItem) {
+                removeTempItem(idx);
+            }
+
+            if(timeleft > 0) {
+                if(settings[idx].items.indexOf(timeleft) === -1) {
+                    settings[idx].items.push(timeleft);
+                    settings[idx].items.sort(function(a, b) {return a - b;});
+                    settings[idx].tempItem = settings[idx].items.indexOf(timeleft);
+                }
+                settings[idx].state.active = timeleft;
+            } else {
+                settings[idx].state.active = 'OFF';
+            } 
+        }
+
+        var settings = [
+                {
+                    name: 'recording'
                 },
+                {
+                    name: 'language',
+                    widget: 'slider',
+                    items: ['English', 'Español', 'Français']
+                },
+                {
+                    name: 'sleepTimer',
+                    widget: 'slider',
+                    items: ['OFF', 5, 15, 30, 45, 60, 75, 90, 105, 120, 180, 240],
+                    showCurrent: true
+                },
+                {
+                    name: 'parentalControl'
+                },
+                {
+                    name: 'favoriteChannel'
+                }
+            ],
+            factory = {
                 getSettings: function() {
+                    return settings;
+                },
+                getActiveSettings: function () {
                     return lsService.get('quickSettings');
                 },
-                updateSettings: function () {
-                    var updated = factory.avaliableSettings.slice();
-
-                    if(activeSettings.sleepTimer.timestamp) {
-                        var timepast = ( new Date() - new Date(activeSettings.sleepTimer.timestamp) ) / 1000 / 60,
-                            timeleft = parseInt(activeSettings.sleepTimer.active - timepast);
-                        
-                        if(timeleft > 0) {
-                            updated[getIdxByName(sleepTimer)].items.push(timeleft);
-                            updated[getIdxByName(sleepTimer)].items.sort(function(a, b) {return a - b;});
-                            activeSettings.sleepTimer.active = timeleft;
-                            activeSettings.sleepTimer.timestamp = new Date();
-                        }
-                    }
-
-                    return updated;
+                setActiveSettings: function(data) {
+                    lsService.set('quickSettings', data || activeSettings);
                 },
-                avaliableSettings: [
-                    {
-                        name: 'recording',
-                        textEnabled: 'Stop recording ' + callSign + ' ' + channelNumber + ' now',
-                        textDisabled:'Start recording ' + callSign + ' ' + channelNumber + ' now'
-                    },
-                    {
-                        name: 'favoriteChannel',
-                        textEnabled: 'Remove ' + callSign + ' ' + channelNumber + ' from Favorites List',
-                        textDisabled:'Add ' + callSign + ' ' + channelNumber + ' to Favorites List'
-                    },
-                    {
-                        name: 'language',
-                        text: 'Choose SAP language',
-                        items: ['English', 'Español', 'Français'],
-                        widget: 'slider'
-                    },
-                    {
-                        name: 'sleepTimer',
-                        text: 'Set Sleep Timer  (minutes)',
-                        items: ['OFF', 5, 15, 30, 45, 60, 75, 90, 105, 120, 180, 240],
-                        widget: 'slider',
-                        showCurrent: true
-                    },
-                    {
-                        name: 'parentalControl',
-                        textEnabled: 'Turn OFF Parental Control',
-                        textDisabled: 'Turn ON Parental Control'
+                restoreSettings: function() {
+                    activeSettings = factory.getActiveSettings()
+                    extendSettings(settings, activeSettings);
+                },
+                adjustByTime: function (isOpen) {
+                    var sleepTimerIdx = getIdxByName('sleepTimer');
+
+                    if(!settings[sleepTimerIdx].state.timestamp) {
+                        return;
                     }
-                ]
+
+                    if(isOpen) {
+                        addTempItem(sleepTimerIdx);                
+                    } else {
+                        removeTempItem(sleepTimerIdx);
+                    }
+                }
             },
-            activeSettings = factory.getSettings();
+            activeSettings = factory.getActiveSettings();
 
         if( !activeSettings ) {
-            factory.setSettings({
+            activeSettings = {
                 recording: {
                     active: false
                 },
@@ -91,20 +119,32 @@ angular.module('app.services', ['LocalStorageModule'])
                 parentalControl: {
                     active: false
                 }
-            });
-        } else {
-            // if(activeSettings.sleepTimer.timestamp) {
-            //     var timepast = ( new Date() - new Date(activeSettings.sleepTimer.timestamp) ) / 1000 / 60,
-            //         timeleft = parseInt(activeSettings.sleepTimer.active - timepast);
-                
-            //     if(timeleft > 0) {
-            //         var idx = factory.avaliableSettings[3].items.indexOf(activeSettings.sleepTimer.active);
-            //         factory.avaliableSettings[3].items.splice(idx, 0, timeleft);
-            //         activeSettings.sleepTimer.active = timeleft;
-            //         factory.setSettings(activeSettings);
-            //     }
-            // }
+            };
+
+            factory.setActiveSettings(activeSettings);
         }
 
+        extendSettings(settings, activeSettings);
+
         return factory;
-    }]);
+    }])
+    .factory('quickSettingsTexts', function () {
+        var callSign = 'WSCBS',
+            channelNumber = 2,
+            factory = {
+                getTexts: function(options) {
+                    return {
+                        'recording_enabled': 'Stop recording ' + callSign + ' ' + channelNumber + ' now',
+                        'recording_disabled':'Start recording ' + callSign + ' ' + channelNumber + ' now',
+                        'favoriteChannel_enabled': 'Remove ' + callSign + ' ' + channelNumber + ' from Favorites List',
+                        'favoriteChannel_disabled':'Add ' + callSign + ' ' + channelNumber + ' to Favorites List',
+                        'language_text': 'Choose SAP language',
+                        'sleepTimer_text': 'Set Sleep Timer  (minutes)',
+                        'parentalControl_enabled': 'Turn OFF Parental Control',
+                        'parentalControl_disabled': 'Turn ON Parental Control'
+                    };
+                }
+            };
+
+        return factory;
+    });
